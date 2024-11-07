@@ -5,10 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business
+namespace DataAccess.Abstract
 {
-    public interface IProductService
+    public interface ICustomerDal:IEntityRepository<Customer>
     {
-        List<Product> GetAll();
     }
 }

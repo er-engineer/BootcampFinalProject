@@ -1,4 +1,5 @@
-﻿using DataAccess.Abstract;
+﻿using Business.Abstract;
+using DataAccess.Abstract;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
 using System;
@@ -20,6 +21,16 @@ namespace Business.Concrete
         {
             // Business Codes
             return _productDal.GetAll(); 
+        }
+
+        public List<Product> GetAllByCategoryId(int categoryId)
+        {
+            return _productDal.GetAll(p => p.CategoryId == categoryId);
+        }
+
+        public List<Product> GetByUnitPrice(decimal minPrice, decimal maxPrice)
+        {
+            return _productDal.GetAll(p => p.UnitPrice >= minPrice && p.UnitPrice <= maxPrice);
         }
     }
 }
