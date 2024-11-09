@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
@@ -18,25 +20,37 @@ namespace Business.Concrete
         {
             _productDal = productDal;
         }
-        public List<Product> GetAll()
+        public IDataResult<List<Product>> GetAll()
         {
             // Business Codes
-            return _productDal.GetAll(); 
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll(),Messages.ProductsListed); 
         }
 
-        public List<Product> GetAllByCategoryId(int categoryId)
+        public IDataResult<List<Product>> GetAllByCategoryId(int categoryId)
         {
-            return _productDal.GetAll(p => p.CategoryId == categoryId);
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.CategoryId == categoryId));
         }
 
-        public List<Product> GetByUnitPrice(decimal minPrice, decimal maxPrice)
+        public IDataResult<List<Product>> GetByUnitPrice(decimal minPrice, decimal maxPrice)
         {
-            return _productDal.GetAll(p => p.UnitPrice >= minPrice && p.UnitPrice <= maxPrice);
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.UnitPrice >= minPrice && p.UnitPrice <= maxPrice));
         }
 
-        public List<ProductDetailDto> GetProductDetails()
+        public IDataResult<List<ProductDetailDto>> GetProductDetails()
         {
-            return _productDal.GetProductDetails();
+            return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetProductDetails());
+        }
+
+        public IResult Add(Product product) 
+        {
+            // Business Codes
+            _productDal.Add(product);
+            return new SuccessDataResult<Product>(Messages.ProductAdded);
+        }
+
+        public IDataResult<Product> GetById(int productId)
+        {
+           return new SuccessDataResult<Product>(_productDal.Get(p => p.ProductId == productId));
         }
     }
 }
